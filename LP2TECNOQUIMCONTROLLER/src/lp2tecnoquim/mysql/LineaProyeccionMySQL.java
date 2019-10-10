@@ -14,31 +14,30 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import lp2tecnoquim.config.DBManager;
-import lp2tecnoquim.dao.InsumoDAO;
-import lp2tecnoquim.model.Insumo;
+import lp2tecnoquim.dao.LineaProyeccionDAO;
+import lp2tecnoquim.model.LineaProyeccion;
 
 /**
  *
  * @author Carlos Sosa
  */
-public class InsumoMySQL implements InsumoDAO {
+public class LineaProyeccionMySQL implements LineaProyeccionDAO{
     Connection con = null;
     CallableStatement cs;
     
     @Override
-    public void insertar(Insumo insumo) {
+    public void insertar(LineaProyeccion lineaProyeccion, int idProyeccion) {
          try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_INSUMO(?,?,?,?,?,?)}");
-            cs.setString("_NOMBRE", insumo.getNombre());
-            cs.setFloat("_GRANULARIDAD", insumo.getGranularidad());
-            cs.setString("_COLOR", insumo.getColor());
-            cs.setFloat("_CANTIDAD", insumo.getCantidad());
-            cs.setString("_UNIDAD", insumo.getUnidad());
+            cs = con.prepareCall("{call INSERTAR_LINEA_PROYECCION(?,?,?,?)}");
             
-            cs.registerOutParameter("_ID_INSUMO", java.sql.Types.INTEGER);
+            cs.setInt("_FK_ID_PROD", lineaProyeccion.getProducto().getIdProducto());
+            cs.setInt("_FK_ID_PROY_VENTA", idProyeccion);
+            cs.setInt("_CANTIDAD", lineaProyeccion.getCantidad());
+            
+            cs.registerOutParameter("_ID_LIN_PROY", java.sql.Types.INTEGER);
             cs.executeUpdate();
-            insumo.setId(cs.getInt("_ID_INSUMO"));
+            lineaProyeccion.setId(cs.getInt("_ID_LIN_PROY"));
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
@@ -47,16 +46,14 @@ public class InsumoMySQL implements InsumoDAO {
     }
 
     @Override
-    public void actualizar(Insumo insumo) {
+    public void actualizar(LineaProyeccion lineaProyeccion, int idProyeccion) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_INSUMO(?,?,?,?,?,?)}");
-            cs.setInt("_ID_INSUMO", insumo.getId());
-            cs.setString("_NOMBRE", insumo.getNombre());
-            cs.setFloat("_GRANULARIDAD", insumo.getGranularidad());
-            cs.setString("_COLOR", insumo.getColor());
-            cs.setFloat("_CANTIDAD", insumo.getCantidad());
-            cs.setString("_UNIDAD", insumo.getUnidad());
+            cs = con.prepareCall("{call ACTUALIZAR_LINEA_PROYECCION(?,?,?,?)}");
+            cs.setInt("_ID_LIN_PROY", lineaProyeccion.getId());
+            cs.setInt("_FK_ID_PROD", lineaProyeccion.getProducto().getIdProducto());
+            cs.setInt("_FK_ID_PROY_VENTA", idProyeccion);
+            cs.setInt("_CANTIDAD", lineaProyeccion.getCantidad());
             
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -70,8 +67,8 @@ public class InsumoMySQL implements InsumoDAO {
     public void eliminar(int id) {
        try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ELIMINAR_INSUMO(?)}");
-            cs.setInt("_ID_INSUMO", id);
+            cs = con.prepareCall("{call ELIMINAR_LINEA_PROYECCION(?)}");
+            cs.setInt("_ID_LIN_PROY", id);
             
            
         }catch(SQLException ex){
@@ -83,30 +80,31 @@ public class InsumoMySQL implements InsumoDAO {
 
 
     @Override
-    public ArrayList<Insumo> listar() {
-       ArrayList<Insumo> insumos = new ArrayList<>();
+    public ArrayList<LineaProyeccion> listar(int idProyeccion) {
+       ArrayList<LineaProyeccion> lineasProyeccion = new ArrayList<>();
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_INSUMO()}");
+            cs = con.prepareCall("{call LISTAR_LINEA_PROYECCION(?)}");
+            cs.setInt("_FK_ID_PROY_VENTA", idProyeccion);
+            
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                Insumo  i = new Insumo();
+                LineaProyeccion  l = new LineaProyeccion();
                 
-                i.setId(rs.getInt("ID_INSUMO"));
-                i.setNombre(rs.getString("NOMBRE"));
-                i.setColor(rs.getString("COLOR"));
-                i.setGranularidad(rs.getFloat("GRANULARIDAD"));
-                i.setCantidad(rs.getFloat("CANTIDAD"));
-                i.setUnidad(rs.getString("UNIDAD"));
+                l.setId(cs.getInt("ID_LIN_PROY"));
+                l.setCantidad(cs.getInt("CANTIDAD"));
+                l.getProducto().setIdProducto(cs.getInt("ID_PRODUCTO"));
+                l.getProducto().setNombre(cs.getString("NOMBRE"));
+                l.getProducto().setPresentacion(cs.getString("PRESENTACION"));
      
-                insumos.add(i);
+                lineasProyeccion.add(l);
             }
         }catch(ClassNotFoundException | SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        return insumos;
+        return lineasProyeccion;
     }
 }

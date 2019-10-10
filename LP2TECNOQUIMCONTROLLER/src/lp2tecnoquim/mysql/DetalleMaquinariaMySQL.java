@@ -19,7 +19,7 @@ import lp2tecnoquim.model.DetalleMaquinaria;
 
 /**
  *
- * @author pukurin
+ * @author Carlos Sosa
  */
 public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
     Connection con = null;

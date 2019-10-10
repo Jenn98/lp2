@@ -19,7 +19,7 @@ import lp2tecnoquim.model.OrdenProduccion;
 
 /**
  *
- * @author pukurin
+ * @author Carlos Sosa
  */
 public class OrdenProduccionMySQL implements OrdenProduccionDAO {
     Connection con = null;

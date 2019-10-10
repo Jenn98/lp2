@@ -19,7 +19,7 @@ import lp2tecnoquim.model.LineaInsumo;
 
 /**
  *
- * @author pukurin
+ * @author Carlos Sosa
  */
 public class LineaInsumoMySQL implements LineaInsumoDAO {
     Connection con = null;

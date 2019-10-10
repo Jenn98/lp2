@@ -20,7 +20,7 @@ import lp2tecnoquim.model.EstadoMaterial;
 
 /**
  *
- * @author pukurin
+ * @author Carlos Sosa
  */
 public class DetalleAlmacenInsumoMySQL implements DetalleAlmacenInsumoDAO {
     Connection con = null;
@@ -62,7 +62,7 @@ public class DetalleAlmacenInsumoMySQL implements DetalleAlmacenInsumoDAO {
             cs.setInt("_NUM_LOTE", detalleAlmacenInsumo.getnLote());
             cs.setDate("_PERIODO", new java.sql.Date(detalleAlmacenInsumo.getPeriodo().getTime()));
             cs.setInt("_STOCK", detalleAlmacenInsumo.getStock());
-            cs.setInt("_CALIDAD", 0);
+            cs.setInt("_CALIDAD", detalleAlmacenInsumo.getEstado().ordinal());
                     
             cs.executeUpdate();
             

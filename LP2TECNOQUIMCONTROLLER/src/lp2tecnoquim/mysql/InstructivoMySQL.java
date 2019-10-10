@@ -19,7 +19,7 @@ import lp2tecnoquim.model.Instructivo;
 
 /**
  *
- * @author pukurin
+ * @author Carlos Sosa
  */
 public class InstructivoMySQL implements InstructivoDAO {
     Connection con = null;
