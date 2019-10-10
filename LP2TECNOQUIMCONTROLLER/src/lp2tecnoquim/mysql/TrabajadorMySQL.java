@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package lp2tecnoquim.mysql;
 
 import java.sql.CallableStatement;
@@ -15,10 +10,6 @@ import lp2tecnoquim.config.DBManager;
 import lp2tecnoquim.dao.TrabajadorDAO;
 import lp2tecnoquim.model.Trabajador;
 
-/**
- *
- * @author alulab14
- */
 public class TrabajadorMySQL implements TrabajadorDAO{
 
     Connection con = null;
@@ -28,7 +19,7 @@ public class TrabajadorMySQL implements TrabajadorDAO{
     public void insertar(Trabajador trabajador) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_TRABAJADOR(?,?,?)}");
+            cs = con.prepareCall("{call INSERTAR_TRABAJADOR(?,?,?,?,?,?)}");
             cs.setString("_NOMBRES", trabajador.getNombres());
             cs.setString("_APELLIDOS",trabajador.getApellidos());
             cs.setString("_DNI",trabajador.getDni());
@@ -36,9 +27,9 @@ public class TrabajadorMySQL implements TrabajadorDAO{
             cs.setInt("_FK_ID_ROL",trabajador.getRol().getIdRol());
             cs.setInt("_FK_ID_USUARIO",trabajador.getUsuario().getIdUsuario());
             
-            cs.registerOutParameter("_ID_TRABAJADOR  ", java.sql.Types.INTEGER);
+            cs.registerOutParameter("_ID_TRABAJADOR", java.sql.Types.INTEGER);
             cs.executeUpdate();
-            trabajador.setId(cs.getInt("_ID_TRABAJADOR  "));
+            trabajador.setId(cs.getInt("_ID_TRABAJADOR"));
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{

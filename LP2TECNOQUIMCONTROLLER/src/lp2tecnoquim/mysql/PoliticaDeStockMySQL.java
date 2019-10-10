@@ -7,39 +7,42 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import lp2tecnoquim.config.DBManager;
-import lp2tecnoquim.dao.ProyeccionVentaDAO;
-import lp2tecnoquim.model.ProyeccionVenta;
+import lp2tecnoquim.dao.PoliticaStockDAO;
+import lp2tecnoquim.model.PoliticaStock;
 
-public class ProyeccionVentaMySQL implements ProyeccionVentaDAO{
+public class PoliticaDeStockMySQL implements PoliticaStockDAO{
+
     Connection con = null;
     CallableStatement cs;
 
     @Override
-    public void insertar(ProyeccionVenta proyeccion) {
+    public void insertar(PoliticaStock politica) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_PROYECCION(?)}");
-            java.sql.Date sqlDate = new java.sql.Date(proyeccion.getPeriodo().getTime());
-            cs.setDate("_PERIODO", sqlDate);
+            cs = con.prepareCall("{call INSERTAR_POLITICA_DE_STOCK(?,?,?)}");
+            cs.setInt("_FK_ID_PROD", politica.getProducto().getIdProducto());
+            cs.setInt("_CANT_MAX",politica.getCantMax());
+            cs.setInt("_CANT_MIN",politica.getCantMin());
             
-            cs.registerOutParameter("_ID_PROY_VENTA", java.sql.Types.INTEGER);
+            cs.registerOutParameter("_ID_PLT_STOCK", java.sql.Types.INTEGER);
             cs.executeUpdate();
-            proyeccion.setId(cs.getInt("_ID_PROY_VENTA"));
+            politica.setId(cs.getInt("_ID_PLT_STOCK"));
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
-        }        
+        }
     }
 
     @Override
-    public void actualizar(ProyeccionVenta proyeccion) {
-       try{
+    public void actualizar(PoliticaStock politica) {
+        try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_PROYECCION(?,?)}");
-            cs.setInt("_ID_PROY_VENTA", proyeccion.getId());
-            java.sql.Date sqlDate = new java.sql.Date(proyeccion.getPeriodo().getTime());
-            cs.setDate("_PERIODO", sqlDate);
+            cs = con.prepareCall("{call ACTUALIZAR_POLITICA_DE_STOCK(?,?,?,?)}");
+            cs.setInt("_ID_PLT_STOCK", politica.getId());
+            cs.setInt("_CANT_MAX", politica.getCantMax());
+            cs.setInt("_CANT_MIN", politica.getCantMin());
+            cs.setInt("_FK_ID_PROD", politica.getProducto().getIdProducto());
                     
             cs.executeUpdate();
             
@@ -54,40 +57,41 @@ public class ProyeccionVentaMySQL implements ProyeccionVentaDAO{
     public void eliminar(int id) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ELIMINAR_PROYECCION(?)}");
-            cs.setInt("_ID_PROY_VENTA", id);
+            cs = con.prepareCall("{call ELIMINAR_POLITICA_DE_STOCK(?)}");
+            cs.setInt("_ID_PLT_STOCK", id);
             
            
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
-        }  
+        }
     }
 
     @Override
-    public ArrayList<ProyeccionVenta> listar() {
-        ArrayList<ProyeccionVenta> proyeccion = new ArrayList<>();
+    public ArrayList<PoliticaStock> listar() {
+        ArrayList<PoliticaStock> politica = new ArrayList<>();
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_PROYECCION()}");
+            cs = con.prepareCall("{call LISTAR_POLITICA_DE_STOCK()}");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                ProyeccionVenta  a = new ProyeccionVenta();
-                a.setId(rs.getInt("ID_TRABAJADOR"));
-                a.setPeriodo(rs.getDate("PERIODO"));
+                PoliticaStock  a = new PoliticaStock();
+                a.setId(rs.getInt("ID_PLT_STOCK"));
+                a.setCantMax(rs.getInt("CANT_MAX"));
+                a.setCantMin(rs.getInt("CANT_MIN"));
+                a.getProducto().setIdProducto(rs.getInt("FK_ID_PROD"));
                 ///////////////////////////////////////////////
                 
-                
-                proyeccion.add(a);
+                politica.add(a);
             }
         }catch(ClassNotFoundException | SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        return proyeccion;
+        return politica;
     }
     
 }

@@ -16,7 +16,7 @@ public class ProyeccionVenta {
     
     private int id;
     private Date periodo; 
-    private ArrayList<LineaProyeccion > proyecciones;
+    private ArrayList<LineaProyeccion >proyecciones;
 
     public ProyeccionVenta() {
     }

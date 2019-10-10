@@ -84,7 +84,7 @@ public class MySQLDAOFactory extends DAOFactory {
 
     @Override
     public PoliticaStockDAO getPoliticaStockDAO() {
-        return new PoliticaStockMySQL();
+        return new PoliticaDeStockMySQL();
     }
 
     @Override
