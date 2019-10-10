@@ -18,6 +18,7 @@ public class DetalleAlmacenInsumo {
     private Date periodo; 
     private int stock;
     private Almacen almacen;
+    private EstadoMaterial estado;
 
     public DetalleAlmacenInsumo() {
     }
@@ -76,6 +77,20 @@ public class DetalleAlmacenInsumo {
 
     public void setAlmacen(Almacen almacen) {
         this.almacen = almacen;
+    }
+
+    /**
+     * @return the estado
+     */
+    public EstadoMaterial getEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(EstadoMaterial estado) {
+        this.estado = estado;
     }
 
     
