@@ -29,7 +29,7 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
     public void insertar(DetalleMaquinaria detalleMaquinaria, int idPMP) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_DETALLE_MAQUINARIA(?,?,?,?,?)}");
+            cs = con.prepareCall("{call INSERTAR_DET_MAQUINARIA(?,?,?,?,?)}");
             cs.setBoolean("_ESTADO", detalleMaquinaria.isEstado());
             cs.setDate("_FECHA", new java.sql.Date(detalleMaquinaria.getFecha().getTime()));
             cs.setInt("_FK_ID_PMP", idPMP);
@@ -50,7 +50,7 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
     public void actualizar(DetalleMaquinaria detalleMaquinaria, int idPMP) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_DETALLE_MAQUINARIA(?,?,?,?,?,?)}");
+            cs = con.prepareCall("{call ACTUALIZAR_DET_MAQUINARIA(?,?,?,?,?,?)}");
             cs.setInt("_ID_DET_MAQ", detalleMaquinaria.getIdDetalleM());
             cs.setBoolean("_ESTADO", detalleMaquinaria.isEstado());
             cs.setDate("_FECHA", new java.sql.Date(detalleMaquinaria.getFecha().getTime()));
@@ -70,7 +70,7 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
     public void eliminar(int id) {
        try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ELIMINAR_DETALLE_MAQUINARIA(?)}");
+            cs = con.prepareCall("{call ELIMINAR_DET_MAQUINARIA(?)}");
             cs.setInt("_ID_DET_MAQ", id);
             
            
@@ -87,7 +87,7 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_DETALLE_MAQUINARIA(?)}");
+            cs = con.prepareCall("{call LISTAR_DET_MAQUINARIA(?)}");
             cs.setInt("_FK_ID_PMP", idPMP);
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
