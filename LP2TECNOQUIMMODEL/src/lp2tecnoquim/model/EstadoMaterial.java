@@ -7,7 +7,7 @@ package lp2tecnoquim.model;
 
 /**
  *
- * @author pukurin
+ * @author Carlos Sosa
  */
 public enum EstadoMaterial {
     Bueno, Pendiente, Corregido

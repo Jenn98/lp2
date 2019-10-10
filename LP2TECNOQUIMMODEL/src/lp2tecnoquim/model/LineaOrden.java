@@ -14,16 +14,20 @@ public class LineaOrden {
     private int idLineaOrden;
     private Producto producto;
     private int cantProducto;
-    private Estado estadoCalidad;
+    private EstadoMaterial estadoCalidad;
     
     public LineaOrden(){
         
     }
     
-    public LineaOrden(     Producto p,  int c,   Estado e){
+    public LineaOrden(     Producto p,  int c,   EstadoMaterial e){
         producto=p;
         cantProducto=c;
         estadoCalidad=e;
+    }
+
+    public void setIdLineaOrden(int idLineaOrden) {
+        this.idLineaOrden = idLineaOrden;
     }
     
     
@@ -47,11 +51,11 @@ public class LineaOrden {
         this.cantProducto = cantProducto;
     }
     
-    public Estado getEstadoCalidad() {
+    public EstadoMaterial getEstadoCalidad() {
         return estadoCalidad;
     }
     
-    public void setEstadoCalidad(Estado estadoCalidad) {
+    public void setEstadoCalidad(EstadoMaterial estadoCalidad) {
         this.estadoCalidad = estadoCalidad;
     }
 
