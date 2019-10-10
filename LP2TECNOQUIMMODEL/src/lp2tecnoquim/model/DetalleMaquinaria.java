@@ -13,21 +13,19 @@ import java.util.Date;
  */
 public class DetalleMaquinaria {
     private int idDetalleM;
-    private Estado estado;
+    private boolean estado;
     private Maquinaria maquinaria;
     private Date fecha;
 
-    public DetalleMaquinaria(Estado estado, Maquinaria maquinaria, Date fecha) {
+    public DetalleMaquinaria(int idDetalleM, boolean estado, Maquinaria maquinaria, Date fecha) {
+        this.idDetalleM = idDetalleM;
         this.estado = estado;
         this.maquinaria = maquinaria;
         this.fecha = fecha;
     }
 
-
-
     public DetalleMaquinaria() {
     }
-
 
     public int getIdDetalleM() {
         return idDetalleM;
@@ -37,11 +35,11 @@ public class DetalleMaquinaria {
         this.idDetalleM = idDetalleM;
     }
 
-    public Estado getEstado() {
+    public boolean isEstado() {
         return estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
@@ -60,11 +58,6 @@ public class DetalleMaquinaria {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-    
-    public void mostrar(){
-        
-    };
-    
 
     
 }
