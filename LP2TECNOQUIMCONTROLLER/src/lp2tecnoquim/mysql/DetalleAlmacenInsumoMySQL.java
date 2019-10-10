@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import lp2tecnoquim.config.DBManager;
 import lp2tecnoquim.dao.DetalleAlmacenInsumoDAO;
 import lp2tecnoquim.model.DetalleAlmacenInsumo;
+import lp2tecnoquim.model.EstadoMaterial;
 
 /**
  *
@@ -24,6 +25,7 @@ import lp2tecnoquim.model.DetalleAlmacenInsumo;
 public class DetalleAlmacenInsumoMySQL implements DetalleAlmacenInsumoDAO {
     Connection con = null;
     CallableStatement cs;
+    int estado;
 
     @Override
     public void insertar(DetalleAlmacenInsumo detalleAlmacenInsumo) {
@@ -116,15 +118,26 @@ public class DetalleAlmacenInsumoMySQL implements DetalleAlmacenInsumoDAO {
                 d.getAlmacen().getTrabajador().setNombres(rs.getString("NOMBRES"));
                 d.getAlmacen().getTrabajador().setApellidos(rs.getString("APELLIDOS"));
                 d.getAlmacen().getTrabajador().setDni(rs.getString("DNI"));
-//                a.setIdAlmacen(rs.getInt("ID_ALMACEN"));
-//                a.setDireccion(rs.getString("DIRECCION"));
-//                a.setTipo(rs.getString("TIPO"));
-//                a.getTrabajador().setId(rs.getInt("ID_"));
-                ///////////////////////////////////////////////
+                d.getAlmacen().getTrabajador().setCorreo(rs.getString("CORREO"));
+                /* ........ Guardar Rol */
+                d.getAlmacen().getTrabajador().getRol().setIdRol(rs.getInt("ID_ROL"));
+                d.getAlmacen().getTrabajador().getRol().setDescripcion(rs.getString("DESCRIPCION"));
+                /* ........ Fin Guardar Rol */
+                /* --- Fin Guardar Trabajador */
+                /* Fin Guardar Almacen */
+                estado = rs.getInt("CALIDAD");
                 
-                
-                
-                
+                switch (estado) {
+                    case 0:
+                        d.setEstado(EstadoMaterial.Bueno);
+                        break;
+                    case 1:
+                        d.setEstado(EstadoMaterial.Corregido);
+                        break;
+                    default:
+                        d.setEstado(EstadoMaterial.Pendiente);
+                        break;
+                }
                 
                 detalleAlmacenInsumo.add(d);
             }
