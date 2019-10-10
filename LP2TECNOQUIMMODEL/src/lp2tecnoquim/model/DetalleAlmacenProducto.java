@@ -23,11 +23,14 @@ public class DetalleAlmacenProducto {
     public DetalleAlmacenProducto() {
     }
 
-    public DetalleAlmacenProducto(int nLote, Date periodo, int stock, Almacen almacen) {
+    public DetalleAlmacenProducto(int id, Producto producto, int nLote, Date periodo, int stock, Almacen almacen, EstadoMaterial estado) {
+        this.id = id;
+        this.producto = producto;
         this.nLote = nLote;
         this.periodo = periodo;
         this.stock = stock;
         this.almacen = almacen;
+        this.estado = estado;
     }
 
 
