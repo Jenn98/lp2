@@ -14,31 +14,29 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import lp2tecnoquim.config.DBManager;
-import lp2tecnoquim.dao.DetalleMaquinariaDAO;
-import lp2tecnoquim.model.DetalleMaquinaria;
+import lp2tecnoquim.dao.OrdenProduccionDAO;
+import lp2tecnoquim.model.OrdenProduccion;
 
 /**
  *
  * @author pukurin
  */
-public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
+public class OrdenProduccionMySQL implements OrdenProduccionDAO {
     Connection con = null;
     CallableStatement cs;
-
+    
     @Override
-    public void insertar(DetalleMaquinaria detalleMaquinaria, int idPMP) {
-        try{
+    public void insertar(OrdenProduccion ordenProduccion, int idPMP) {
+         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call INSERTAR_DETALLE_MAQUINARIA(?,?,?,?,?)}");
-            cs.setBoolean("_ESTADO", detalleMaquinaria.isEstado());
-            cs.setDate("_FECHA", new java.sql.Date(detalleMaquinaria.getFecha().getTime()));
+            cs = con.prepareCall("{call INSERTAR_ORDENPROD(?,?,?,?)}");
+            
+            cs.setDate("_FECHA", new java.sql.Date(ordenProduccion.getFecha().getTime()));
             cs.setInt("_FK_ID_PMP", idPMP);
-            cs.setInt("_FK_ID_MAQUINARIA", detalleMaquinaria.getMaquinaria().getId());
-            cs.registerOutParameter("_ID_DET_MAQ", java.sql.Types.INTEGER);
             
+            cs.registerOutParameter("_ID_ORDENPROD", java.sql.Types.INTEGER);
             cs.executeUpdate();
-            
-            detalleMaquinaria.setIdDetalleM(cs.getInt("_ID_DET_MAQ"));
+            ordenProduccion.setId(cs.getInt("_ID_ORDENPROD"));
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
@@ -47,17 +45,14 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
     }
 
     @Override
-    public void actualizar(DetalleMaquinaria detalleMaquinaria, int idPMP) {
+    public void actualizar(OrdenProduccion ordenProduccion, int idPMP) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_DETALLE_MAQUINARIA(?,?,?,?,?,?)}");
-            cs.setInt("_ID_DET_MAQ", detalleMaquinaria.getIdDetalleM());
-            cs.setBoolean("_ESTADO", detalleMaquinaria.isEstado());
-            cs.setDate("_FECHA", new java.sql.Date(detalleMaquinaria.getFecha().getTime()));
+            cs = con.prepareCall("{call ACTUALIZAR_ORDENPROD(?,?,?)}");
+            
+            cs.setInt("_ID_ORDENPROD", ordenProduccion.getId());
+            cs.setDate("_FECHA", new java.sql.Date(ordenProduccion.getFecha().getTime()));
             cs.setInt("_FK_ID_PMP", idPMP);
-            cs.setInt("_FK_ID_MAQUINARIA", detalleMaquinaria.getMaquinaria().getId());
-                    
-            cs.executeUpdate();
             
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -65,13 +60,14 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
     }
-
+    
+    
     @Override
     public void eliminar(int id) {
        try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ELIMINAR_DETALLE_MAQUINARIA(?)}");
-            cs.setInt("_ID_DET_MAQ", id);
+            cs = con.prepareCall("{call ELIMINAR_ORDENPROD(?)}");
+            cs.setInt("_ID_ORDENPROD", id);
             
            
         }catch(SQLException ex){
@@ -81,32 +77,28 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
         }
     }
 
+
     @Override
-    public ArrayList<DetalleMaquinaria> listar(int idPMP) {
-        ArrayList<DetalleMaquinaria> detalleMaquinaria = new ArrayList<>();
+    public ArrayList<OrdenProduccion> listar() {
+       ArrayList<OrdenProduccion> ordenProduccions = new ArrayList<>();
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_DETALLE_MAQUINARIA(?)}");
-            cs.setInt("_FK_ID_PMP", idPMP);
+            cs = con.prepareCall("{call LISTAR_ORDENPROD()}");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
-                DetalleMaquinaria  d = new DetalleMaquinaria();
+                OrdenProduccion  o = new OrdenProduccion();
                 
-                d.setIdDetalleM(rs.getInt("ID_DET_MAQ"));
-                d.setFecha(new java.util.Date(rs.getDate("FECHA").getTime()));
-                d.setEstado(rs.getBoolean("ESTADO"));
-                d.getMaquinaria().setId(rs.getInt("ID_MAQUINARIA"));
-                d.getMaquinaria().setNombre(rs.getString("NOMBRE"));
-                d.getMaquinaria().setTipo(rs.getString("TIPO"));
-                
-                detalleMaquinaria.add(d);
+                o.setId(rs.getInt("ID_ORDENPROD"));
+                o.setFecha(new java.util.Date(rs.getDate("FECHA").getTime()));
+     
+                ordenProduccions.add(o);
             }
         }catch(ClassNotFoundException | SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
-        return detalleMaquinaria;
+        return ordenProduccions;
     }
 }

@@ -85,12 +85,13 @@ public class LineaInsumoMySQL implements LineaInsumoDAO {
 
 
     @Override
-    public ArrayList<LineaInsumo> listar() {
+    public ArrayList<LineaInsumo> listar(int idInstructivo) {
        ArrayList<LineaInsumo> lineaInsumos = new ArrayList<>();
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_LINEA_INSUMO()}");
+            cs = con.prepareCall("{call LISTAR_LINEA_INSUMO(?)}");
+            cs.setInt("_FK_ID_INSTRUCTIVO", idInstructivo);
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 LineaInsumo  l = new LineaInsumo();
