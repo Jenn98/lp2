@@ -15,9 +15,9 @@ import lp2tecnoquim.model.LineaProyeccion;
  */
 public interface LineaProyeccionDAO {
     
-    void insertar(LineaProyeccion linea);
-    void actualizar(LineaProyeccion linea);
+    void insertar(LineaProyeccion linea, int idProyeccion);
+    void actualizar(LineaProyeccion linea, int idProyeccion);
     void eliminar(int id);
-    ArrayList<LineaProyeccion> listar();
+    ArrayList<LineaProyeccion> listar(int idProyeccion);
     
 }

@@ -15,9 +15,9 @@ import lp2tecnoquim.model.LineaOrden;
  */
 public interface LineaOrdenDAO {
     
-    void insertar(LineaOrden lineaOrden);
-    void actualizar(LineaOrden lineaOrden);
+    void insertar(LineaOrden lineaOrden, int idOrden);
+    void actualizar(LineaOrden lineaOrden, int idOrden);
     void eliminar(int id);
-    ArrayList<LineaOrden> listar();
+    ArrayList<LineaOrden> listar(int idOrden);
     
 }
