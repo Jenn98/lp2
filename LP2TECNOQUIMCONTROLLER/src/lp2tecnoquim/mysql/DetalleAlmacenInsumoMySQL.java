@@ -42,6 +42,7 @@ public class DetalleAlmacenInsumoMySQL implements DetalleAlmacenInsumoDAO {
             cs.registerOutParameter("_ID_DET_ALM_INS", java.sql.Types.INTEGER);
             
             cs.executeUpdate();
+            
             detalleAlmacenInsumo.setId(cs.getInt("_ID_DET_ALM_INS"));
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
