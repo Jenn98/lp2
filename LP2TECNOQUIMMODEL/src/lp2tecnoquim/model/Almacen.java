@@ -57,5 +57,10 @@ public class Almacen {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+
+    public void setIdAlmacen(int idAlmacen) {
+        this.idAlmacen = idAlmacen;
+    }
     
 }
