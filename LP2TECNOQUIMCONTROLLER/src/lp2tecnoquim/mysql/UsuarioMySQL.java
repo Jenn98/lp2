@@ -20,8 +20,8 @@ public class UsuarioMySQL implements UsuarioDAO {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_USUARIO(?,?,?)}");
-            cs.setString("_USERNAME ", usuario.getUsername());
-            cs.setString("_CONTRASENA ",usuario.getPassword());
+            cs.setString("_USERNAME", usuario.getUsername());
+            cs.setString("_CONTRASENA",usuario.getPassword());
             
             cs.registerOutParameter("_ID_USUARIO ", java.sql.Types.INTEGER);
             cs.executeUpdate();
@@ -37,7 +37,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     public void actualizar(Usuario usuario) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ACTUALIZAR_ALMACEN(?,?,?)}");
+            cs = con.prepareCall("{call ACTUALIZAR_USUARIO(?,?,?)}");
             cs.setInt("_ID_USUARIO", usuario.getIdUsuario());
             cs.setString("_USERNAME", usuario.getUsername());
             cs.setString("_CONTRASENA",usuario.getPassword());
@@ -55,7 +55,7 @@ public class UsuarioMySQL implements UsuarioDAO {
     public void eliminar(int idUsuario) {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call ELIMINAR_ALMACEN(?)}");
+            cs = con.prepareCall("{call ELIMINAR_USUARIO(?)}");
             cs.setInt("_ID_USUARIO", idUsuario);
             
            
@@ -72,11 +72,11 @@ public class UsuarioMySQL implements UsuarioDAO {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
-            cs = con.prepareCall("{call LISTAR_ALMACEN()}");
+            cs = con.prepareCall("{call LISTAR_USUARIO()}");
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 Usuario  a = new Usuario();
-                a.setIdUsuario(rs.getInt("ID_USUARIO "));
+                a.setIdUsuario(rs.getInt("ID_USUARIO"));
                 a.setUsername(rs.getString("USERNAME"));
                 a.setPassword(rs.getString("CONTRASENA"));
                 ///////////////////////////////////////////////

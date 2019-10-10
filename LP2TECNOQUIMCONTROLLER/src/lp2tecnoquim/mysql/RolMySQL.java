@@ -65,8 +65,8 @@ public class RolMySQL implements RolDAO{
        ArrayList<Rol> roles = new ArrayList<>();
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(DBManager.urlMySQL, DBManager.userMySQL, DBManager.passwordMySQL);
-            st = con.createStatement();
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM ROL");
             while(rs.next()){
                 Rol e = new Rol();
