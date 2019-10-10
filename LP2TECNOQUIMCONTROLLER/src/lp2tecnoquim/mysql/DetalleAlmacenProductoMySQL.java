@@ -42,7 +42,7 @@ public class DetalleAlmacenProductoMySQL implements DetalleAlmacenProductoDAO {
             cs.registerOutParameter("_ID_DET_ALM_PROD", java.sql.Types.INTEGER);
             
             cs.executeUpdate();
-            detalleAlmacenProducto.setId(cs.getInt("_ID_DET_ALM_INS"));
+            detalleAlmacenProducto.setId(cs.getInt("_ID_DET_ALM_PROD"));
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
@@ -77,7 +77,7 @@ public class DetalleAlmacenProductoMySQL implements DetalleAlmacenProductoDAO {
        try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ELIMINAR_DETALLE_ALMACEN_PRODUCTO(?)}");
-            cs.setInt("_ID_DET_ALM_INS", id);
+            cs.setInt("_ID_DET_ALM_PROD", id);
             
            
         }catch(SQLException ex){

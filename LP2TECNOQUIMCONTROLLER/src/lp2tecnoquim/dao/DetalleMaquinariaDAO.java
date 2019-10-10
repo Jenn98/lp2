@@ -14,8 +14,8 @@ import lp2tecnoquim.model.DetalleMaquinaria;
  */
 public interface DetalleMaquinariaDAO {
     
-    void insertar(DetalleMaquinaria detalleM);
-    void actualizar(DetalleMaquinaria detalleM);
+    void insertar(DetalleMaquinaria detalleM, int idPMP);
+    void actualizar(DetalleMaquinaria detalleM, int idPMP);
     void eliminar(int id);
     ArrayList<DetalleMaquinaria> listar();
     
