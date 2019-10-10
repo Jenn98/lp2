@@ -17,6 +17,6 @@ public interface DetalleMaquinariaDAO {
     void insertar(DetalleMaquinaria detalleM, int idPMP);
     void actualizar(DetalleMaquinaria detalleM, int idPMP);
     void eliminar(int id);
-    ArrayList<DetalleMaquinaria> listar();
+    ArrayList<DetalleMaquinaria> listar(int idPMP);
     
 }

@@ -18,6 +18,6 @@ public interface LineaInsumoDAO {
     void insertar(LineaInsumo linea, int idInstructivo);
     void actualizar(LineaInsumo linea, int idInstructivo);
     void eliminar(int id);
-    ArrayList<LineaInsumo> listar();
+    ArrayList<LineaInsumo> listar(int idInstructivo);
     
 }
