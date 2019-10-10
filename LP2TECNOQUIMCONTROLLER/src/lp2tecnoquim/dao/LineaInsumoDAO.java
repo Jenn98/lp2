@@ -15,8 +15,8 @@ import lp2tecnoquim.model.LineaInsumo;
  */
 public interface LineaInsumoDAO {
     
-    void insertar(LineaInsumo linea);
-    void actualizar(LineaInsumo linea);
+    void insertar(LineaInsumo linea, int idInstructivo);
+    void actualizar(LineaInsumo linea, int idInstructivo);
     void eliminar(int id);
     ArrayList<LineaInsumo> listar();
     
