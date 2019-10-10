@@ -14,8 +14,7 @@ public class LineaInsumo {
     private int idLineaI;
     private Insumo insumo;
     private int cantInsumo;
-    private Estado calidad;
-    
+    private boolean estado;
 
     public int getIdLineaI() {
         return idLineaI;
@@ -42,12 +41,13 @@ public class LineaInsumo {
         this.cantInsumo = cantInsumo;
     }
 
-    public Estado getCalidad() {
-        return calidad;
+    public boolean isEstado() {
+        return estado;
     }
 
-    public void setCalidad(Estado calidad) {
-        this.calidad = calidad;
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
 
+    
 }
