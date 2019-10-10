@@ -5,6 +5,7 @@
  */
 package lp2tecnoquim.mysql;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,16 +22,20 @@ import lp2tecnoquim.model.Rol;
  */
 public class RolMySQL implements RolDAO{
     Connection con = null;
-    Statement st = null;
+    CallableStatement cs;
     
     @Override
     public void insertar(Rol rol) {
          try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(DBManager.urlMySQL, DBManager.userMySQL, DBManager.passwordMySQL);
-            st = con.createStatement();
-            st.executeUpdate("INSERT INTO ROL (DESCRIPCION) VALUES('"+rol.getDescripcion()+"')");
-        }catch(ClassNotFoundException | SQLException ex){
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call INSERTAR_ROL(?,?)}");
+            
+            cs.setString("_DESCRIPCION", rol.getDescripcion());
+            
+            cs.registerOutParameter("_ID_ROL", java.sql.Types.INTEGER);
+            cs.executeUpdate();
+            rol.setIdRol(cs.getInt("_ID_ROL"));
+        }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -40,30 +45,20 @@ public class RolMySQL implements RolDAO{
     @Override
     public void actualizar(Rol rol) {
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(DBManager.urlMySQL, DBManager.userMySQL, DBManager.passwordMySQL);
-            st = con.createStatement();
-            st.executeUpdate("UPDATE EMPLEADO SET DESCRIPCION = '"+rol.getDescripcion()+"' WHERE ID_ROL = '"+rol.getIdRol()+"'");
-        }catch(ClassNotFoundException | SQLException ex){
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call ACTUALIZAR_ROL(?,?)}");
+            cs.setInt("_ID_ROL", rol.getIdRol());
+            cs.setString("_DESCRIPCION", rol.getDescripcion());          
+            cs.executeUpdate();
+            
+        }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
         }
     }
 
-    @Override
-    public void eliminar(int IdRol) {
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(DBManager.urlMySQL, DBManager.userMySQL, DBManager.passwordMySQL);
-            st = con.createStatement();
-            st.executeUpdate("DELETE FROM ROL WHERE ID_ROL = '"+IdRol+"'");
-        }catch(ClassNotFoundException | SQLException ex){
-            System.out.println(ex.getMessage());
-        }finally{
-            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
-        }
-    }
+
 
     @Override
     public ArrayList<Rol> listar() {

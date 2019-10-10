@@ -5,8 +5,10 @@
  */
 package lp2tecnoquim.mysql;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -21,26 +23,55 @@ import lp2tecnoquim.model.Almacen;
 public class AlmacenMySQL implements AlmacenDAO{
     
     Connection con = null;
-    Statement st = null;
+    CallableStatement cs;
 
     @Override
     public void insertar(Almacen almacen) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call INSERTAR_ALMACEN(?,?,?,?)}");
+            cs.setInt("_ID_TRABAJADOR", almacen.getTrabajador().getId());
+            cs.setString("_DIRECCION",almacen.getDireccion());
+            cs.setString("_TIPO", almacen.getTipo());
+            
+            cs.registerOutParameter("_ID_ALMACEN", java.sql.Types.INTEGER);
+            cs.executeUpdate();
+            almacen.setIdAlmacen(cs.getInt("_ID_ALMACEN"));
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
     }
 
     @Override
     public void actualizar(Almacen almacen) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call ACTUALIZAR_ALMACEN(?,?,?,?)}");
+            cs.setInt("_ID_ALUMNO", almacen.getIdAlmacen());
+            cs.setInt("_ID_TRABAJADOR", almacen.getTrabajador().getId());
+            cs.setString("_DIRECCION",almacen.getDireccion());
+            cs.setString("_TIPO", almacen.getTipo());
+                    
+            cs.executeUpdate();
+            
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
     }
 
     @Override
     public void eliminar(int id) {
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(DBManager.urlMySQL, DBManager.userMySQL, DBManager.passwordMySQL);
-            st = con.createStatement();
-                st.executeUpdate("DELETE FROM ALMACEN WHERE ID_ALMACEN  = '"+id+"'");
-        }catch(ClassNotFoundException | SQLException ex){
+       try{
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call ELIMINAR_ALMACEN(?)}");
+            cs.setInt("_ID_TRABAJADOR", id);
+            
+           
+        }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
             try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
@@ -49,7 +80,32 @@ public class AlmacenMySQL implements AlmacenDAO{
 
     @Override
     public ArrayList<Almacen> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Almacen> almacen = new ArrayList<>();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
+            cs = con.prepareCall("{call LISTAR_ALMACEN()}");
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Almacen  a = new Almacen();
+                a.setIdAlmacen(rs.getInt("ID_ALMACEN"));
+                a.setDireccion(rs.getString("DIRECCION"));
+                a.setTipo(rs.getString("TIPO"));
+                a.getTrabajador().setId(rs.getInt("ID_"));
+                ///////////////////////////////////////////////
+                
+                
+                
+                
+                
+                almacen.add(a);
+            }
+        }catch(ClassNotFoundException | SQLException ex){
+            System.out.println(ex.getMessage());
+        }finally{
+            try{con.close();}catch(SQLException ex){System.out.println(ex.getMessage());}
+        }
+        return almacen;
     }
     
 }

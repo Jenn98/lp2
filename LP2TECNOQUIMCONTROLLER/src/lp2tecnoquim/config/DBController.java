@@ -9,10 +9,11 @@ package lp2tecnoquim.config;
  *
  * @author alulab14
  */
-public class DBManager {
+public abstract class DBController {
     
-    public static String url = "jdbc:mysql://lp2ta.c8ips0ntznjf.us-east-1.rds.amazonaws.com:3306/basetecnoquim";
-    public static String user = "admin";
-    public static String password = "abcd1234";
+      private static final DAOFactory daoFactory = DAOFactory.getDAOFactory();
+      
+      
+    
     
 }

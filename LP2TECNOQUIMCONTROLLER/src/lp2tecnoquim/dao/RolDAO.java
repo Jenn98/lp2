@@ -16,7 +16,6 @@ import lp2tecnoquim.model.Usuario;
 public interface RolDAO {
     void insertar(Rol rol);
     void actualizar(Rol rol);
-    void eliminar(int IdRol);
     ArrayList<Rol> listar();
     
 }
