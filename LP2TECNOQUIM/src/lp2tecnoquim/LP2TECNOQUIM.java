@@ -6,9 +6,10 @@
 package lp2tecnoquim;
 
 import java.util.ArrayList;
-import lp2tecnoquim.dao.UsuarioDAO;
-import lp2tecnoquim.model.Usuario;
-import lp2tecnoquim.mysql.UsuarioMySQL;
+import lp2tecnoquim.config.DAOFactory;
+import lp2tecnoquim.dao.*;
+import lp2tecnoquim.model.*;
+import lp2tecnoquim.mysql.*;
 
 /**
  *
@@ -22,15 +23,13 @@ public class LP2TECNOQUIM {
     public static void main(String[] args) {
         // TODO code application logic here
         //Ingresar Usuario
-        UsuarioDAO daoUsuario = new UsuarioMySQL();
         
-        Usuario e1 = new Usuario ("Jefe","123456");
-
-        daoUsuario.insertar(e1);
+        Usuario u = new Usuario();
         
+        u.setUsername("rarias");
+        u.setPassword("1234");
         
-             
-        
+        DAOFactory.getDAOFactory().getUsuarioDAO().insertar(u);
         
     }
     
