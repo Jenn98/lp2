@@ -30,7 +30,7 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
         try{
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call INSERTAR_DET_MAQUINARIA(?,?,?,?,?)}");
-            cs.setBoolean("_ESTADO", detalleMaquinaria.isEstado());
+            cs.setBoolean("_ESTADO", detalleMaquinaria.isActivo());
             cs.setDate("_FECHA", new java.sql.Date(detalleMaquinaria.getFecha().getTime()));
             cs.setInt("_FK_ID_PMP", idPMP);
             cs.setInt("_FK_ID_MAQUINARIA", detalleMaquinaria.getMaquinaria().getId());
@@ -52,7 +52,7 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
             con = DriverManager.getConnection(DBManager.url, DBManager.user, DBManager.password);
             cs = con.prepareCall("{call ACTUALIZAR_DET_MAQUINARIA(?,?,?,?,?,?)}");
             cs.setInt("_ID_DET_MAQ", detalleMaquinaria.getIdDetalleM());
-            cs.setBoolean("_ESTADO", detalleMaquinaria.isEstado());
+            cs.setBoolean("_ESTADO", detalleMaquinaria.isActivo());
             cs.setDate("_FECHA", new java.sql.Date(detalleMaquinaria.getFecha().getTime()));
             cs.setInt("_FK_ID_PMP", idPMP);
             cs.setInt("_FK_ID_MAQUINARIA", detalleMaquinaria.getMaquinaria().getId());
@@ -95,7 +95,7 @@ public class DetalleMaquinariaMySQL implements DetalleMaquinariaDAO {
                 
                 d.setIdDetalleM(rs.getInt("ID_DET_MAQ"));
                 d.setFecha(new java.util.Date(rs.getDate("FECHA").getTime()));
-                d.setEstado(rs.getBoolean("ESTADO"));
+                d.setActivo(rs.getBoolean("ESTADO"));
                 d.getMaquinaria().setId(rs.getInt("ID_MAQUINARIA"));
                 d.getMaquinaria().setNombre(rs.getString("NOMBRE"));
                 d.getMaquinaria().setTipo(rs.getString("TIPO"));
