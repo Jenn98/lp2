@@ -13,13 +13,13 @@ import java.util.Date;
  */
 public class DetalleMaquinaria {
     private int idDetalleM;
-    private boolean estado;
+    private boolean activo;
     private Maquinaria maquinaria;
     private Date fecha;
 
     public DetalleMaquinaria(int idDetalleM, boolean estado, Maquinaria maquinaria, Date fecha) {
         this.idDetalleM = idDetalleM;
-        this.estado = estado;
+        this.activo = estado;
         this.maquinaria = maquinaria;
         this.fecha = fecha;
     }
@@ -35,12 +35,12 @@ public class DetalleMaquinaria {
         this.idDetalleM = idDetalleM;
     }
 
-    public boolean isEstado() {
-        return estado;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setEstado(boolean estado) {
-        this.estado = estado;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     public Maquinaria getMaquinaria() {
