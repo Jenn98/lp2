@@ -25,7 +25,7 @@ public class UsuarioMySQL implements UsuarioDAO {
             
             cs.registerOutParameter("_ID_USUARIO", java.sql.Types.INTEGER);
             cs.executeUpdate();
-            usuario.setIdUsuario(cs.getInt("_ID_USUARIO "));
+            usuario.setIdUsuario(cs.getInt("_ID_USUARIO"));
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }finally{
