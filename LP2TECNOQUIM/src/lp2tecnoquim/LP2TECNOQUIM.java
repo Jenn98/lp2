@@ -26,8 +26,8 @@ public class LP2TECNOQUIM {
         
         Usuario u = new Usuario();
         
-        u.setUsername("rarias");
-        u.setPassword("1234");
+        u.setUsername("ctrujillo");
+        u.setPassword("yacai");
         
         DAOFactory.getDAOFactory().getUsuarioDAO().insertar(u);
         
