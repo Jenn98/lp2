@@ -71,6 +71,11 @@ public class MySQLDAOFactory extends DAOFactory {
     public MaquinariaDAO getMaquinariaDAO() {
         return new MaquinariaMySQL();
     }
+    
+    @Override
+    public MensajeDAO getMensajeDAO() {
+        return new MensajeMySQL();
+    }
 
     @Override
     public OrdenProduccionDAO getOrdenProduccionDAO() {

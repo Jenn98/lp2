@@ -23,6 +23,7 @@ public abstract class DAOFactory {
     public abstract LineaOrdenDAO getLineaOrdenDAO();
     public abstract LineaProyeccionDAO getLineaProyeccionDAO();
     public abstract MaquinariaDAO getMaquinariaDAO();
+    public abstract MensajeDAO getMensajeDAO();
     public abstract OrdenProduccionDAO getOrdenProduccionDAO();
     public abstract PlanMaestroProduccionDAO getPlanMaestroProduccionDAO();
     public abstract PoliticaStockDAO getPoliticaStockDAO();
